@@ -1,0 +1,17 @@
+{
+  "name": "nuxt-app",
+  "version": "1.0.0",
+  "description": "practice nuxt",
+  "author": "t.mizukuro",
+  "private": true,
+  "scripts": {
+    "dev": "nuxt",
+    "build": "nuxt build",
+    "start": "nuxt start",
+    "generate": "nuxt generate"
+  },
+  "dependencies": {
+    "nuxt": "^2.0.0"
+  },
+  "devDependencies": {}
+}
