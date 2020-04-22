@@ -1,41 +1,13 @@
 <template>
     <section class="post-list">
         <PostPreview
-            id="1"
+            v-for="post in posts"
+            :key="post.id"
+            :id="post.id"
             :is-admin="isAdmin"
-            thumbnail=""
-            title="Hello there!"
-            previewText="this is my first post!"/>
-        <PostPreview
-            id="2"
-            :is-admin="isAdmin"
-            thumbnail=""
-            title="Hello there 2 !"
-            previewText="this is my first post!"/>
-        <PostPreview
-            id="3"
-            :is-admin="isAdmin"
-            thumbnail=""
-            title="Hello there 3!"
-            previewText="this is my first post!"/>
-        <PostPreview
-            id="4"
-            :is-admin="isAdmin"
-            thumbnail=""
-            title="Hello there 4!"
-            previewText="this is my first post!"/>
-        <PostPreview
-            id="5"
-            :is-admin="isAdmin"
-            thumbnail=""
-            title="Hello there!"
-            previewText="this is my first post!"/>
-        <PostPreview
-            id="6"
-            :is-admin="isAdmin"
-            thumbnail=""
-            title="Hello there!"
-            previewText="this is my first post!"/>
+            :thumbnail="post.thumbnail"
+            :title="post.title"
+            :previewText="post.previewText"/>
     </section>
 </template>
 <script>
@@ -48,6 +20,10 @@ export default {
         isAdmin: {
             type: Boolean,
             default: false
+        },
+        posts: {
+            type: Array,
+            required: true
         }
     }
 }
