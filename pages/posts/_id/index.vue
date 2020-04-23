@@ -14,22 +14,17 @@
     </div>
 </template>
 <script>
+import axios from 'axios'
 export default {
-    asyncData(context, callback) {
-        setTimeout(() => {
-            callback(null, {
-                loadedPost:
-                    {
-                    id: 1,
-                    title: "first post (ID: " + context.route.params.id + ")",
-                    previewText: "this is my first post",
-                    author: 'Tomoya',
-                    updatedDate: new Date(),
-                    content: 'Some dummy text hiwch is definitely not the preview ',
-                    thumbnail: ""
-                }
-            });
-        },500)
+    asyncData(context,) {
+        return axios.get('https://nuxt-app-779f8.firebaseio.com/post/' + context.params.id + '.json')
+        .then(res => {
+            return {
+                loadedPost: res.data
+            }
+
+        })
+        .catch(e => context.error(e))
     }
 }
 </script>

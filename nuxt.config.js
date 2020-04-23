@@ -49,5 +49,16 @@ export default {
     */
     extend (config, ctx) {
     }
+  },
+  env: {
+    baseUrl: process.env.BASE_URL  || ''
+  },
+  router: {
+    extendRoutes(routes, resolve) {
+      routes.push({
+        path: '*' ,
+        component: resolve(__dirname,  'pages/index.vue')
+      })
+    }
   }
 }

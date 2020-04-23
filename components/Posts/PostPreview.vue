@@ -1,5 +1,5 @@
 <template>
-    <nuxt-link :to="'/posts/' + id" class="post-preview">
+    <nuxt-link :to="postLink" class="post-preview">
         <div
             class="post-thumbnail"
             :style="{backgroundImage: 'url(' + thumbnail + ')'}"></div>
@@ -14,8 +14,12 @@ export default {
     name: 'PostPreview',
     props: {
         id: {
-            type: Number,
+            type: String,
             required: true
+        },
+        isAdmin: {
+          type: Boolean,
+          required: true
         },
         thumbnail: {
             type: String,

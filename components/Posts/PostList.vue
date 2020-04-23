@@ -4,7 +4,7 @@
             v-for="post in posts"
             :key="post.id"
             :id="post.id"
-            :is-admin="isAdmin"
+            :isAdmin="isAdmin"
             :thumbnail="post.thumbnail"
             :title="post.title"
             :previewText="post.previewText"/>
@@ -31,7 +31,7 @@ export default {
 <style scoped>
 .post-list {
   display: flex;
-  padding: 20px;
+  padding: 10px;
   box-sizing: border-box;
   flex-wrap: wrap;
   align-items: center;
