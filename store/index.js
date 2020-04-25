@@ -3,7 +3,7 @@ import firebase from '@/plugins/firebase'
 
 export const state = () =>  ({
     loadedPosts: [],
-    token: ''
+    token:''
 });
 export const mutations =  {
     setPosts(state, posts){
@@ -19,8 +19,10 @@ export const mutations =  {
     },
     setToken(state, token){
         state.token = token
+    },
+    clearToken(state){
+        state.token = null;
     }
-
 }
 export const actions = {
     nuxtServerInit(vuexContext, context){
@@ -58,29 +60,33 @@ export const actions = {
         vuexContext.commit('setPosts', posts)
     },
     authenticateUser(vuexContext, authData) {
-        const authFunc = authData.isLogin ?
-firebase.auth().signInWithEmailAndPassword(authData.email, authData.password) :
- firebase.auth().createUserWithEmailAndPassword(authData.email, authData.password) ;
-        authFunc.then(result => {
-          console.log('LOGIN SUCCESS')
-          console.log(result)
-          firebase.auth().currentUser.getIdToken(true)
-            .then((result) => {
-                vuexContext.commit('setToken', result)
-            })
-            .catch((e) => {
-                console.log(e)
-            })
+        const authFunc = authData.isLogin ? firebase.auth().signInWithEmailAndPassword(authData.email, authData.password) : firebase.auth().createUserWithEmailAndPassword(authData.email, authData.password) ;
+        authFunc
+        .then(result => {
+            console.log('SUCCESS')
+            console.log(result)
+            firebase.auth().currentUser.getIdToken(true)
+                .then((result) => {
+                    vuexContext.commit('setToken', result)
+                })
+                .catch((e) => {
+                    console.log(e)
+                })
+            // vuexContext.dispatch('setLogoutTimer', )
         })
-        .catch(( e ) => {
-          console.log('LOGIN ERROR')
-          console.log(e)
-        })
-
+        .catch(e => console.log(e))
+    },
+    setLogoutTimer(vuexContext,duration){
+        setTimeout(() => {
+            vuexContext.commit('clearToken')
+        }, duration)
     }
 }
 export const getters =  {
     loadedPosts(state) {
         return state.loadedPosts
+    },
+    isAuthenticated(state){
+        return state.token != null
     }
 }

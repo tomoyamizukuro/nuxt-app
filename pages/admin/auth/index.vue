@@ -51,12 +51,7 @@ export default {
       .then(() => {
         this.$router.push('/')
       } )
-      .then(() => {
-
-      })
-      .catch(() => {
-
-      })
+      .catch(e => console.log(e))
     }
   }
 }

@@ -18,6 +18,7 @@ import {mapState, mapMutations, mapActions} from 'vuex'
 
 export default {
     layouts: 'admin',
+    middleware: ['auth'],
     components: {
         PostList,
         AppButton
