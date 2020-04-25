@@ -8,14 +8,13 @@
 </template>
 <script>
 import PostList from '@/components/Posts/PostList'
+import {mapState, mapMutations, mapActions} from 'vuex'
 export default {
   components: {
       PostList
   },
   computed: {
-    loadedPosts () {
-      return this.$store.getters.loadedPosts;
-    }
+    ...mapState(['loadedPosts'])
   }
 };
 </script>

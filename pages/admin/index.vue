@@ -14,6 +14,7 @@
 <script>
 import PostList from '@/components/Posts/PostList'
 import AppButton from '@/components/UI/AppButton'
+import {mapState, mapMutations, mapActions} from 'vuex'
 
 export default {
     layout: 'admin',
@@ -22,9 +23,7 @@ export default {
         AppButton
     },
     computed: {
-        loadedPosts() {
-            return this.$store.getters.loadedPosts
-        }
+    ...mapState(['loadedPosts'])
     }
 }
 </script>
