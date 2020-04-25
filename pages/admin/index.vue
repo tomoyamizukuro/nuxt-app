@@ -17,7 +17,7 @@ import AppButton from '@/components/UI/AppButton'
 import {mapState, mapMutations, mapActions} from 'vuex'
 
 export default {
-    layout: 'admin',
+    layouts: 'admin',
     components: {
         PostList,
         AppButton

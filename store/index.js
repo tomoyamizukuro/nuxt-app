@@ -1,7 +1,9 @@
 import axios from 'axios'
+import firebase from '@/plugins/firebase'
 
 export const state = () =>  ({
-    loadedPosts: []
+    loadedPosts: [],
+    token: ''
 });
 export const mutations =  {
     setPosts(state, posts){
@@ -14,7 +16,11 @@ export const mutations =  {
         const postIndex = state.loadedPosts.findIndex(
             post => post.id === editedPost.id);
             state.loadedPosts[postIndex] = editedPost
+    },
+    setToken(state, token){
+        state.token = token
     }
+
 }
 export const actions = {
     nuxtServerInit(vuexContext, context){
@@ -40,13 +46,37 @@ export const actions = {
         .catch(e => console.log(e))
     },
     editPost(vuexContext, editedPost){
-        return axios.put('https://nuxt-app-779f8.firebaseio.com/post/' + editedPost.id + '.json', editedPost)
+        console.log('TOKEN');
+        console.log(vuexContext.state.token);
+
+        return axios.put('https://nuxt-app-779f8.firebaseio.com/post/' + editedPost.id + '.json?auth=' + vuexContext.state.token, editedPost)
         .then(res =>
             vuexContext.commit('editPost', editedPost))
         .catch(e => console.log(e))
     },
     setPosts(vuexContext, posts){
         vuexContext.commit('setPosts', posts)
+    },
+    authenticateUser(vuexContext, authData) {
+        const authFunc = authData.isLogin ?
+firebase.auth().signInWithEmailAndPassword(authData.email, authData.password) :
+ firebase.auth().createUserWithEmailAndPassword(authData.email, authData.password) ;
+        authFunc.then(result => {
+          console.log('LOGIN SUCCESS')
+          console.log(result)
+          firebase.auth().currentUser.getIdToken(true)
+            .then((result) => {
+                vuexContext.commit('setToken', result)
+            })
+            .catch((e) => {
+                console.log(e)
+            })
+        })
+        .catch(( e ) => {
+          console.log('LOGIN ERROR')
+          console.log(e)
+        })
+
     }
 }
 export const getters =  {

@@ -26,8 +26,8 @@ export default {
       type: String,
       default: ''
     }
+    }
   }
-}
 </script>
 
 <style scoped>
