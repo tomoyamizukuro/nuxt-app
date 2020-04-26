@@ -26,6 +26,7 @@ import firebase from '@/plugins/firebase'
 export default {
   name: 'AdminAuthPage',
   layouts: 'admin',
+  middleware: ['check-auth'],
   components: {
     AppControlInput,
     AppButton

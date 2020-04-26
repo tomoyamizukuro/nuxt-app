@@ -1,5 +1,6 @@
 import axios from 'axios'
 import firebase from '@/plugins/firebase'
+import Cookie from 'js-cookie'
 
 export const state = () =>  ({
     loadedPosts: [],
@@ -59,34 +60,88 @@ export const actions = {
     setPosts(vuexContext, posts){
         vuexContext.commit('setPosts', posts)
     },
-    authenticateUser(vuexContext, authData) {
-        const authFunc = authData.isLogin ? firebase.auth().signInWithEmailAndPassword(authData.email, authData.password) : firebase.auth().createUserWithEmailAndPassword(authData.email, authData.password) ;
-        authFunc
-        .then(result => {
+    async authenticateUser(vuexContext, authData) {
+        try {
+            const firebaseUser = authData.isLogin ? await firebase.auth().signInWithEmailAndPassword(authData.email, authData.password) : await firebase.auth().createUserWithEmailAndPassword(authData.email, authData.password) ;
             console.log('SUCCESS')
-            console.log(result)
-            firebase.auth().currentUser.getIdToken(true)
-                .then((result) => {
-                    vuexContext.commit('setToken', result)
-                })
-                .catch((e) => {
-                    console.log(e)
-                })
-            // vuexContext.dispatch('setLogoutTimer', )
-        })
-        .catch(e => console.log(e))
+            console.log(firebaseUser)
+            try {
+                const token = await firebase.auth().currentUser.getIdToken(true)
+                // 認証情報として利用するログイン済のユーザーのトークンをstoreに保存する
+                vuexContext.commit('setToken', token)
+                localStorage.setItem('token',token)
+                // ローカルストレージにトークンの有効期限を保存する
+                // localStorage.setItem('tokenExpiration',tokenExpiratin)
+                Cookie.set('jwt', token)
+                // Cookie.set('expirationDate', new Date().getTime() + )
+                // return this.$axios.$post('http://localhost:3000/api/track-data', {data: 'Authenticated'})
+            } catch (error){
+                console.log(error)
+            }
+        } catch (error) {
+            console.log(error)
+        }
     },
     setLogoutTimer(vuexContext,duration){
         setTimeout(() => {
             vuexContext.commit('clearToken')
         }, duration)
+    },
+    initAuth(vuexContext, req){
+        if(process.server){
+            if(!req.headers.cookie){
+                return;
+            }
+            console.log('cookie');
+            console.log(req.headers.cookie);
+            try{
+                const jwtCookie = req.headers.cookie
+                    .split(';')
+                    .find(c => c.trim().startsWith("jwt="))
+                if(!jwtCookie){
+                    return;
+                }
+                const token = jwtCookie.split('=')[1]
+                const expirationDate = req.headers.cookie
+                    .split(';')
+                    .find(c => c.trim().startsWith("expirationDate="))
+                    .split("=")[1]
+                if(!expirationDate){
+                    console.log('No token or invalid token');
+                    vuexContext.commit('logout')
+                    return;
+                }
+            } catch (error){
+                console.log('Error');
+                console.log(error)
+            }
+        }else{
+            const token = localStorage.getItem('token')
+            const expirationDate = localStorage.getItem('tokenExpiration')
+            if(new Date() > expirationDate || !token){
+                return ;
+            }
+        }
+        // vuexContext.dispatch{"setLogoutTimer",}
+    },
+    logout(vuexContext){
+        vuexContext.commit('clearToken')
+        Cookie.remove('jwt')
+        // Cookie.remove('expirationDate')
+        if(process.client){
+            localStorage.removeItem('token')
+            localStorage.removeItem('tokenExpiration')
+        }
     }
 }
 export const getters =  {
     loadedPosts(state) {
         return state.loadedPosts
     },
+    token(state) {
+        return state.token
+    },
     isAuthenticated(state){
-        return state.token != null
+        return state.token !== null
     }
 }

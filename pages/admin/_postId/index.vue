@@ -11,7 +11,7 @@ import AdminPostForm from '@/components/Admin/AdminPostForm'
 import {mapState, mapMutations, mapActions} from 'vuex'
 export default {
     layouts: 'admin',
-    middleware: ['auth'],
+    middleware: ['check-auth','auth'],
     components: {
         AdminPostForm
     },

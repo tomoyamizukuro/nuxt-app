@@ -5,11 +5,13 @@
       v-if="controlType === 'input'"
       v-bind="$attrs"
       :value="value"
+      :type="type"
       @input="$emit('input', $event.target.value)">
     <textarea
       v-if="controlType === 'textarea'"
       rows="10"
       :value="value"
+      :type="type"
       @input="$emit('input', $event.target.value)"></textarea>
   </div>
 </template>
@@ -23,6 +25,10 @@ export default {
       default: 'input'
     },
     value: {
+      type: String,
+      default: ''
+    },
+    type: {
       type: String,
       default: ''
     }
