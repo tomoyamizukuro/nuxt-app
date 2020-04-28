@@ -1,45 +1,45 @@
 <template>
-    <nuxt-link :to="postLink" class="post-preview">
-        <div
-            class="post-thumbnail"
-            :style="{backgroundImage: 'url(' + thumbnail + ')'}"></div>
-        <div class="post-content">
-            <h1>{{ title }}</h1>
-            <p>{{ previewText }}</p>
-        </div>
-    </nuxt-link>
+  <nuxt-link :to="postLink" class="post-preview">
+    <div
+      class="post-thumbnail"
+      :style="{ backgroundImage: 'url(' + thumbnail + ')' }"
+    />
+    <div class="post-content">
+      <h1>{{ title }}</h1>
+      <p>{{ previewText }}</p>
+    </div>
+  </nuxt-link>
 </template>
 <script>
 export default {
-    name: 'PostPreview',
-    props: {
-        id: {
-            type: String,
-            required: true
-        },
-        isAdmin: {
-          type: Boolean,
-          required: true
-        },
-        thumbnail: {
-            type: String,
-            required: true
-        },
-        previewText: {
-            type: String,
-            required: true
-        },
-        title: {
-            type: String,
-            required: true
-        }
+  name: "PostPreview",
+  props: {
+    id: {
+      type: String,
+      required: true,
     },
-    computed: {
-      postLink() {
-        return this.isAdmin ? '/admin/' + this.id : '/posts/' + this.id
-      }
-
-    }
+    isAdmin: {
+      type: Boolean,
+      required: true,
+    },
+    thumbnail: {
+      type: String,
+      required: true,
+    },
+    previewText: {
+      type: String,
+      required: true,
+    },
+    title: {
+      type: String,
+      required: true,
+    },
+  },
+  computed: {
+    postLink() {
+      return this.isAdmin ? "/admin/" + this.id : "/posts/" + this.id
+    },
+  },
 }
 </script>
 
@@ -53,7 +53,7 @@ export default {
 
 a {
   text-decoration: none;
-  color: black
+  color: black;
 }
 .post-thumbnail {
   width: 100%;
@@ -70,6 +70,4 @@ a:hover .post-content,
 a:active .post-content {
   background-color: #ccc;
 }
-
-
 </style>

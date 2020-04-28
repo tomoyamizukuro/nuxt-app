@@ -3,27 +3,27 @@
     <section class="intro">
       <h1>Get the latest tech news!</h1>
     </section>
-    <PostList :posts="loadedPosts"/>
+    <PostList :posts="loadedPosts" />
   </div>
 </template>
 <script>
-import PostList from '@/components/Posts/PostList'
-import {mapState, mapMutations, mapActions} from 'vuex'
+import PostList from "@/components/Posts/PostList"
+import { mapState, mapMutations, mapActions } from "vuex"
 export default {
   components: {
-      PostList
+    PostList,
   },
   computed: {
-    ...mapState(['loadedPosts'])
-  }
-};
+    ...mapState(["loadedPosts"]),
+  },
+}
 </script>
 
 <style scoped>
 h1 {
-    text-align: center;
+  text-align: center;
 }
-.intro{
+.intro {
   height: 300px;
   position: relative;
   padding: 30px;
@@ -31,7 +31,7 @@ h1 {
   background-position: center;
   background-size: cover;
 }
-.intro h1{
+.intro h1 {
   position: absolute;
   top: 10%;
   left: 5%;
@@ -46,5 +46,4 @@ h1 {
     margin: 10px;
   }
 }
-
 </style>

@@ -1,3 +1,3 @@
-export default function (context){
-    console.log('[Middleware] The log Middleware is runnnig')
+export default function (context) {
+  console.log("[Middleware] The log Middleware is runnnig")
 }
